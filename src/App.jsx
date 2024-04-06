@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react'
 import './App.css'
-import SideNav from './components/SideNav'
+import SideNav from './routers/SideNav'
 import Statistics from './components/Statistics';
 import Table from './components/Table';
+import Visuals from './components/Visuals';
 
 const ACCESS_KEY = import.meta.env.MY_ACCESS_KEY;
 
@@ -20,7 +21,7 @@ function App() {
       const response = await fetch(`https://api.openbrewerydb.org/v1/breweries?per_page=70`);
       const json = await response.json();
       setList(json);
-      console.log(json);
+      // console.log(json);
     }
     fetchAllSongData().catch(console.error);
   }, []);
@@ -30,21 +31,21 @@ function App() {
       const filteredData = list.filter((item) => item.name.toLowerCase().includes(inputs.name.toLowerCase()));
       const filteredData_2 = filteredData.filter((item) => item.brewery_type.toLowerCase().includes(inputs.brewery_type.toLowerCase()));
       setFilteredResults(filteredData_2)
-      console.log("1st if statement is working")
+      // console.log("1st if statement is working")
     }else{
       if(inputs.name !== ""){
         const filteredData = list.filter((item) => item.name.toLowerCase().includes(inputs.name.toLowerCase()));
         setFilteredResults(filteredData)
-        console.log("2nd if statement is working")
+        // console.log("2nd if statement is working")
       }
       if(inputs.brewery_type !== ""){
         const filteredData = list.filter((item) => item.brewery_type.toLowerCase().includes(inputs.brewery_type.toLowerCase()));
         setFilteredResults(filteredData)
-        console.log("3rd if statement is working")
+        // console.log("3rd if statement is working")
       }
       if(inputs.name == "" && inputs.brewery_type == ""){
         alert("Enter the name of the brewery or the type to search!!")
-        console.log("else statement is working")
+        // console.log("else statement is working")
       }      
     }
   }
@@ -70,7 +71,7 @@ function App() {
   // };
 
   return (
-    <div className='whole-page'>
+    <>
       <SideNav />
       <div className='data'>
         <Statistics 
@@ -106,7 +107,7 @@ function App() {
               <option value="proprietor">Proprietor</option>
               <option value="closed">Closed</option>
             </select>
-          </div>
+          </div> 
           <div className='search'>
             <button className='search'onClick={Searching}>Search</button>
           </div>
@@ -121,11 +122,18 @@ function App() {
             return <li key={brew.id}>{brew.name}</li>
           })}
         </ul> */}
-        {filteredResults.length === 0 ? <h2>List of all the breweries</h2>:<h2>List of Searched Breweries</h2>}
-        <Table data={filteredResults.length > 0 ? filteredResults:list} />
+        <div className='all-info'>
+          <div className='table-info'>
+            {filteredResults.length === 0 ? <h2>List of all the breweries</h2>:<h2>List of Searched Breweries</h2>}
+            <Table data={filteredResults.length > 0 ? filteredResults:list} />
+          </div>
+          <div className='visuals'>
+            <Visuals data={list} />
+          </div>
+        </div>
       </div>
-    </div>
-  )
+    </>
+  ) 
 };
  
 export default App;

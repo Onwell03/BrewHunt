@@ -1,4 +1,5 @@
 import React from "react";
+import {Link} from "react-router-dom";
 
 const Table = ({data}) => {
     return(
@@ -10,6 +11,7 @@ const Table = ({data}) => {
                         <th>Brewery_type</th>
                         <th>State_province</th>
                         <th>Country</th>
+                        <th>Info</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -19,6 +21,12 @@ const Table = ({data}) => {
                             <td>{brew.brewery_type}</td>
                             <td>{brew.state_province}</td>
                             <td>{brew.country}</td>
+                            <Link
+                            to={`/brewInfo/${brew.id}`}
+                            key={brew.id}
+                            >
+                            <td>🔗</td>
+                            </Link>
                         </tr>
                     ))}
                 </tbody>
